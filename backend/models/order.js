@@ -5,11 +5,11 @@ const orderSchema = new mongoose.Schema({
     {
       name: String,
       price: Number,
-      quantity: Number
-    }
+      quantity: Number,
+    },
   ],
-  total: Number,
-  address: String
+  address: String,
+  totalAmount: Number,
 }, { timestamps: true });
 
 module.exports = mongoose.model("Order", orderSchema);

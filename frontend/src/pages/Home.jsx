@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { API } from "../services/api";
+import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 

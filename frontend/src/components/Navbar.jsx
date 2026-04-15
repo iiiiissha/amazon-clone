@@ -1,58 +1,86 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const navigate = useNavigate();
   const { cart } = useContext(CartContext);
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
-  // 🔥 FIX: total quantity
   const totalItems = cart.reduce(
-    (sum, item) => sum + item.quantity,
+    (sum, item) => sum + (item.quantity || 1),
     0
   );
 
   return (
-    <div className="bg-[#131921] text-white px-6 py-3 flex items-center justify-between shadow">
+    <div className="bg-[#131921] text-white">
 
-      {/* Logo */}
-      <h1
-        className="text-2xl font-bold cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        amazon<span className="text-yellow-400">.clone</span>
-      </h1>
+      {/* TOP NAV */}
+      <div className="flex items-center justify-between px-6 py-3">
 
-      {/* Search */}
-      <div className="flex w-1/2">
-        <input
-          type="text"
-          placeholder="Search products"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 px-3 py-2 text-black rounded-l outline-none"
-        />
-        <button
-          className="bg-yellow-400 px-4 rounded-r"
-          onClick={() => navigate(`/?search=${search}`)}
+        {/* LOGO */}
+        <h1
+          onClick={() => navigate("/")}
+          className="text-2xl font-bold cursor-pointer hover:text-yellow-400"
         >
-          🔍
-        </button>
+          AmazonClone
+        </h1>
+
+        {/* SEARCH */}
+        <div className="flex w-1/2">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full p-2 text-black rounded-l-md outline-none"
+          />
+          <button className="bg-yellow-400 px-4 rounded-r-md text-black">
+            🔍
+          </button>
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-6">
+
+          {/* USER */}
+          <div className="text-sm leading-tight">
+            <p className="text-gray-300">Hello, Isha</p>
+            <p className="font-bold">Account</p>
+          </div>
+
+          {/* ORDERS */}
+          <div
+            onClick={() => navigate("/orders")}
+            className="cursor-pointer text-sm leading-tight hover:text-yellow-400"
+          >
+            <p className="text-gray-300">Returns</p>
+            <p className="font-bold">& Orders</p>
+          </div>
+
+          {/* CART */}
+          <div
+            onClick={() => navigate("/cart")}
+            className="relative flex items-center cursor-pointer"
+          >
+            <span className="text-2xl">🛒</span>
+
+            {/* COUNT */}
+            {totalItems > 0 && (
+              <span className="absolute -top-2 left-4 bg-yellow-400 text-black text-xs font-bold px-2 rounded-full">
+                {totalItems}
+              </span>
+            )}
+
+            <span className="ml-2 font-bold">Cart</span>
+          </div>
+
+        </div>
       </div>
 
-      {/* Cart with FIXED count */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => navigate("/cart")}
-      >
-        Cart 🛒
-
-        {totalItems > 0 && (
-          <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-            {totalItems}
-          </span>
-        )}
+      {/* BOTTOM NAV */}
+      <div className="bg-[#232f3e] px-6 py-2 flex gap-5 text-sm">
+        <p className="cursor-pointer hover:underline">All</p>
+        <p className="cursor-pointer hover:underline">Electronics</p>
+        <p className="cursor-pointer hover:underline">Fashion</p>
+        <p className="cursor-pointer hover:underline">Home</p>
       </div>
 
     </div>

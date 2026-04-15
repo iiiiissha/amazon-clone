@@ -1,26 +1,25 @@
 const express = require("express");
+const router = express.Router();
 const Order = require("../models/Order");
 
-const router = express.Router();
-
-// CREATE ORDER
+// Place Order
 router.post("/", async (req, res) => {
   try {
-    const order = new Order(req.body);
-    const saved = await order.save();
-    res.json(saved);
+    const newOrder = new Order(req.body);
+    const savedOrder = await newOrder.save();
+    res.json(savedOrder);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.message });
   }
 });
 
-// GET ALL ORDERS
+// Get Orders
 router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const orders = await Order.find();
     res.json(orders);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.message });
   }
 });
 
