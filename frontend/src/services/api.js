@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://amazon-clone-backend-0t2o.onrender.com/api",
 });
 
 export default API;
