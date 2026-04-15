@@ -3,20 +3,21 @@ const Product = require("../models/Product");
 
 const router = express.Router();
 
-// GET all products
 router.get("/", async (req, res) => {
   try {
-    const search = req.query.search;
+    const { search, category } = req.query;
 
-    let products;
+    let query = {};
 
     if (search) {
-      products = await Product.find({
-        name: { $regex: search, $options: "i" }
-      });
-    } else {
-      products = await Product.find();
+      query.name = { $regex: search, $options: "i" };
     }
+
+    if (category && category !== "All") {
+      query.category = category;
+    }
+
+    const products = await Product.find(query);
 
     res.json(products);
   } catch (err) {

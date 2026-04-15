@@ -3,28 +3,24 @@ const Order = require("../models/Order");
 
 const router = express.Router();
 
+// CREATE ORDER
 router.post("/", async (req, res) => {
   try {
-    console.log("Incoming Order:", req.body); // 🔥 debug
-
-    const { items, total, address } = req.body;
-
-    if (!items || !total || !address) {
-      return res.status(400).json({ message: "Missing fields" });
-    }
-
-    const order = new Order({
-      items,
-      total,
-      address
-    });
-
+    const order = new Order(req.body);
     const saved = await order.save();
-
     res.json(saved);
   } catch (err) {
-    console.log("ORDER ERROR:", err); // 🔥 SEE ERROR IN TERMINAL
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err);
+  }
+});
+
+// GET ALL ORDERS
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
